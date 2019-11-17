@@ -27,7 +27,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+         
+         return view('details.create',compact('usn'));
     }
 
     /**
@@ -38,7 +39,50 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+        'name'=> 'required',
+        'USN'=> 'required',
+        'cname'=>'required',
+        'cpro'=>'required',
+        'sem'=>'required',
+        'desc'=>'required',
+        'duration'=>'required',
+        'status'=>'required',
+        'sdate'=>'required',
+        'stdate'=>'required',
+        'clink'=>'required'
+      ]);
+      $pd = CertificationDetails::all();
+      $c=CertificationDetails::where('USN',request('USN'))->where('CourseName',request('cname'));
+        if($c->count()==1){
+              echo "<script>alert('Course for this User already exists');</script>";
+              $usn = auth()->user()->usn;
+                $data = CertificationDetails::where('USN',$usn)->get();
+                if(count($data)==0)
+                {   
+                    $sname = auth()->user()->name;
+                    $mydata = ['name'=>$sname,'usn'=>$usn];
+
+                }
+                return view('User.dashboard_user',compact('data','mydata'));
+          }
+      $post=new CertificationDetails;
+      $post->StudentName=request('name');
+      $post->USN=request('USN');
+      $post->CourseName=request('cname');   
+      $post->CourseProvider=request('cpro');
+      $post->Sem=request('sem');
+      $post->Description=request('desc');
+      $post->Duration=request('duration');
+      $post->Status=request('status');
+      $post->BeginDate=request('sdate');
+      $post->EndDate=request('stdate');
+      $post->CertificateLink=request('clink');
+      $post->save();
+      echo "<script>alert('Success');</script>";
+        $usn = auth()->user()->usn;
+        $data = CertificationDetails::where('USN',$usn)->get();
+        return view('User.dashboard_user',compact('data'));
     }
 
     /**

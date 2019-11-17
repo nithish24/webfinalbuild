@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\CertificationDetails;
+use App\users;
 
 class HomeController extends Controller
 {
@@ -19,8 +20,8 @@ class HomeController extends Controller
 
     /**
      * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     '*
+          '     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
@@ -30,8 +31,13 @@ class HomeController extends Controller
         {   
             $usn = auth()->user()->usn;
             $data = CertificationDetails::where('USN',$usn)->get();
-            //return $data[1];
-            return view('User.dashboard_user',compact('data'));
+            if(count($data)==0)
+            {   
+                $sname = auth()->user()->name;
+                $mydata = ['name'=>$sname,'usn'=>$usn];
+
+            }
+            return view('User.dashboard_user',compact('data','mydata'));
         }
                 
     }

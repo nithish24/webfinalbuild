@@ -43,11 +43,18 @@
 
                         
                             <li>
-                                <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                              document.getElementById('logout-form').submit();">
+                                <a href="{{ route('logout') }}" onclick="return logout(event);" >
                                     Logout
                                 </a>
+                                <script type="text/javascript">
+                                    function logout(event){
+                                            event.preventDefault();
+                                            var check = confirm("Do you really want to logout?");
+                                            if(check){ 
+                                               document.getElementById('logout-form').submit();
+                                            }
+                                     }
+                                </script>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     {{ csrf_field() }}

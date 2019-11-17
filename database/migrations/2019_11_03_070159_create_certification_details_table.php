@@ -13,6 +13,8 @@ class CreateCertificationDetailsTable extends Migration
      */
     public function up()
     {
+
+
         Schema::create('certification_details', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
             $table->string('USN');

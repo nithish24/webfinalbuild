@@ -15,16 +15,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
+Route::group(['middleware'=>'preventbackbutton'],function(){
 Auth::routes(['verify' => true]);
-
-
 Route::get('/home', 'HomeController@index')->name('home');
-
-
+Route::get('details/create','UserController@create');
 Route::get('details/summary','PostController@summary');
 Route::get('details/{usn}/{cname}','PostController@show');
-Route::resource('details','PostController');
+Route::get('details','PostController@index');
 
 
 Route::get('{usn}/{cname}','UserController@show');
-Route::resource('User/{usn}','UserController');
+Route::get('User/{usn}','UserController@index');
+Route::post('details/create','UserController@store');
+});
+
+
+
